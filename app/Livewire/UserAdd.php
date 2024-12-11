@@ -47,7 +47,7 @@ class UserAdd extends Component
             'name' => $this->name,
             'email' => $this->email,
             'password' => Hash::make($this->password),
-            'device_limit' => $this->device_limit,
+            'device_limit' => $this->device_limit ?? null,
             'email_verified_at' => Carbon::now(),
             'role' => $this->role
         ]);
