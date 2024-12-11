@@ -17,7 +17,6 @@ class PlanFactory extends Factory
     public function definition(): array
     {
         return [
-            'bundle_id' => fake()->numberBetween(1000, 9999),
             'name' => fake()->monthName(),
             'description' => fake()->text(20),
             'price' => fake()->numberBetween(10, 100),
@@ -29,7 +28,6 @@ class PlanFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'bundle_id' => fake()->numberBetween(1000, 9999),
                 'name' => 'Free Trial',
                 'description' => 'Free Trial Plan (Dont Delete)',
                 'price' => '0.00',
