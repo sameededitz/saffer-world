@@ -16,12 +16,18 @@ Route::middleware('guest')->group(function () {
 
     Route::post('/signup', [AuthController::class, 'signup'])->name('api.login');
 
+    Route::post('/login/google', [SocialController::class, 'LoginGoogle'])->name('api.login.google');
+
+    Route::post('/login/apple', [SocialController::class, 'loginApple'])->name('api.login.apple');
+
     Route::post('/reset-password', [VerifyController::class, 'sendResetLink'])->name('api.reset.password');
 
     Route::post('/password/reset', [VerifyController::class, 'resetPassword'])->name('api.new.password');
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [AuthController::class, 'user'])->name('api.user');
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
 
     Route::post('/purchase', [PurchaseController::class, 'addPurchase'])->name('api.add.purchase');
@@ -41,13 +47,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/email/resend-verification', [VerifyController::class, 'resendVerify'])->name('api.verify.resend');
 
-
 Route::get('/streams', [ServerController::class, 'streams'])->name('api.all.streams');
 
 Route::get('/plans', [ServerController::class, 'plans'])->name('api.all.plans');
 
 Route::get('/options', [OptionController::class, 'getOptions'])->name('api.options');
-
-Route::post('/login/google', [SocialController::class, 'LoginGoogle'])->name('api.login.google');
-
-Route::post('/login/apple', [SocialController::class, 'loginApple'])->name('api.login.apple');
