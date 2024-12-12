@@ -97,6 +97,22 @@ class AuthController extends Controller
                 ], 400);
             }
 
+            $deviceDetails = [
+                'device_name' => $request->device_name,
+                'device_token' => $request->device_token,
+                'ip_address' => $request->ip(),
+                'platform' => $request->platform,
+            ];
+
+            if (!$user->canRegisterDevice($request->device_id)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Device limit reached. You cannot register a new device.'
+                ], 400);
+            }
+
+            $user->registerDevice($request->device_id, $deviceDetails);
+
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
@@ -133,7 +149,8 @@ class AuthController extends Controller
         /** @var \App\Models\User $user **/
         return response()->json([
             'status' => true,
-            'user' => $user
+            'user' => $user,
+            'device_limit' => $user->getSubscriptionDeviceLimit()
         ], 200);
     }
 }

@@ -169,6 +169,7 @@ class User extends Authenticatable implements MustVerifyEmail
         if ($this->canRegisterDevice($deviceId)) {
             return $this->devices()->create([
                 'device_id' => $deviceId,
+                'device_token' => $devicedetails['device_token'],
                 'device_name' => $devicedetails['device_name'],
                 'ip_address' => $devicedetails['ip_address'],
                 'platform' => $devicedetails['platform'],
