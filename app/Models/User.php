@@ -162,6 +162,26 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function registerDevice($deviceId, $devicedetails)
     {
+        $existingDevice = UserDevice::where('device_id', $deviceId)->first();
+
+        if ($existingDevice) {
+            // Check if the device is already assigned to this user
+            if ($existingDevice->user_id === $this->id) {
+                return false; // Device already registered under the current user
+            }
+
+            // Reassign the device to the current user
+            $existingDevice->update([
+                'user_id' => $this->id,
+                'device_token' => $devicedetails['device_token'],
+                'device_name' => $devicedetails['device_name'],
+                'ip_address' => $devicedetails['ip_address'],
+                'platform' => $devicedetails['platform'],
+            ]);
+
+            return $existingDevice;
+        }
+
         if ($this->devices()->where('device_id', $deviceId)->exists()) {
             return false; // Device already registered, do not save again
         }

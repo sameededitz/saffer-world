@@ -107,7 +107,7 @@ class AuthController extends Controller
             if (!$user->canRegisterDevice($request->device_id)) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Device limit reached. You cannot register a new device.'
+                    'message' => 'Device limit reached. You cannot login with a new device.'
                 ], 400);
             }
 
