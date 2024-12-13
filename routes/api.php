@@ -21,8 +21,6 @@ Route::middleware('guest')->group(function () {
     Route::post('/login/apple', [SocialController::class, 'loginApple'])->name('api.login.apple');
 
     Route::post('/reset-password', [VerifyController::class, 'sendResetLink'])->name('api.reset.password');
-
-    Route::post('/password/reset', [VerifyController::class, 'resetPassword'])->name('api.new.password');
 });
 
 Route::middleware('auth:sanctum')->group(function () {

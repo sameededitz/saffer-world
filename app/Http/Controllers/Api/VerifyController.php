@@ -72,18 +72,21 @@ class VerifyController extends Controller
                 'message' => 'User not found.'
             ], 400);
         }
-        $token = Str::random(6);
-        DB::table('password_resets')->updateOrInsert(
-            ['email' => $request->email],
-            ['token' => $token, 'created_at' => now()]
+        $status = Password::sendResetLink(
+            $request->only('email')
         );
 
-        Mail::to($request->email)->send(new ResetPasswordToken($token, $user));
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Password reset token sent. Please check your email.'
-        ], 200);
+        if ($status == Password::RESET_LINK_SENT) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Password reset link sent. Please check your email.'
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => __($status)
+            ], 400);
+        }
     }
     public function resetPassword(Request $request)
     {
